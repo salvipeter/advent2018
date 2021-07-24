@@ -1,0 +1,49 @@
+ 0 jmp 17
+ 1 r3 = 1
+ 2 r1 = 1
+ 3 r4 = r3 * r1
+ 4 r4 = r4 == r2
+ 5 reljmp r4  (if r4 == 42 then jmp 7)
+ 6 jmp 8
+ 7 r0 += r3
+ 8 r1++
+ 9 r4 = r1 > r2
+10 reljmp r4  (if r1 > r2 then jmp 12)
+11 jmp 3
+12 r3++
+13 r4 = r3 > r2
+14 reljmp r4  (if r3 > r2 then jmp 16)
+15 jmp 2
+16 halt
+17 r2 += 2
+18 r2 *= r2
+19 r2 *= 19
+20 r2 *= 11
+21 r4++
+22 r4 *= 22
+23 r4 += 19
+24 r2 += r4
+25 reljmp r0   (if r0 == 0 then jmp 1 else jmp 27)
+26 jmp 1
+27 r4 = 27
+28 r4 *= 28
+29 r4 += 29
+30 r4 *= 30
+31 r4 *= 14
+32 r4 *= 32
+33 r2 += r4
+34 r0 = 0
+35 jmp 1
+
+... so when r0 = 0, r2 is 877 (= 1 * 22 + 19 + 2 * 2 * 19 * 11),
+   and when r0 = 1, r2 is 10551277 (= 877 + (27 * 28 + 29) * 30 * 14 * 32)
+Then the algorithm in lines 1-16 is called, which is:
+
+Input: r2 (r4 is temporary)
+r0 = 0
+for r3 = 1 to r2
+  for r1 = 1 to r2
+    if r3 * r1 == r2
+      r0 += r3
+
+=> sum of divisors of r2
